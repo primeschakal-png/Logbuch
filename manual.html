@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wartungsprotokoll EP — Betriebsanleitung</title>
+<style>
+:root{
+  --papier:#edeef0;
+  --flaeche:#ffffff;
+  --tinte:#16191d;
+  --tinte-2:#5b6670;
+  --linie:#c8cfd5;
+  --stahl:#2a4c63;
+  --signal:#e4a400;
+  --alarm:#a62b24;
+  --gruen:#2c6b4f;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;background:var(--papier);color:var(--tinte);
+  font:16px/1.6 var(--sans);
+  -webkit-text-size-adjust:100%;
+}
+
+/* ---------- Typenschild-Kopf ---------- */
+.schild{
+  background:var(--stahl);color:#fff;
+  border-bottom:6px solid var(--signal);
+  padding:34px 24px 30px;
+}
+.schild-inner{max-width:1080px;margin:0 auto}
+.schild .eyebrow{
+  font:11px/1 var(--mono);letter-spacing:.28em;text-transform:uppercase;
+  color:var(--signal);margin-bottom:14px;
+}
+.schild h1{
+  margin:0;font-size:clamp(26px,4.4vw,42px);line-height:1.05;
+  font-weight:800;letter-spacing:-.01em;
+}
+.schild .sub{margin:10px 0 22px;font-size:17px;opacity:.85;max-width:60ch}
+.typenschild{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:1px;background:rgba(255,255,255,.22);
+  border:1px solid rgba(255,255,255,.22);
+}
+.typenschild div{background:var(--stahl);padding:11px 13px}
+.typenschild dt{
+  font:10px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);margin-bottom:6px;
+}
+.typenschild dd{margin:0;font:14px/1.3 var(--mono);font-weight:600}
+
+/* ---------- Inhalt ---------- */
+nav.toc{
+  background:var(--flaeche);border-bottom:1px solid var(--linie);
+  padding:18px 24px;
+}
+nav.toc ol{
+  max-width:1080px;margin:0 auto;padding:0;list-style:none;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:2px 26px;counter-reset:toc;
+}
+nav.toc li{counter-increment:toc}
+nav.toc a{
+  display:block;padding:5px 0;color:var(--tinte);text-decoration:none;
+  font-size:14px;border-bottom:1px solid transparent;
+}
+nav.toc a::before{
+  content:counter(toc,decimal-leading-zero);
+  font:11px var(--mono);color:var(--stahl);font-weight:700;
+  margin-right:10px;
+}
+nav.toc a:hover{border-bottom-color:var(--signal)}
+
+main{max-width:1080px;margin:0 auto;padding:0 24px 90px}
+
+section{
+  background:var(--flaeche);border:1px solid var(--linie);
+  border-left:4px solid var(--stahl);
+  margin:26px 0;padding:26px 28px;
+}
+/* Marginalie mit Kapitelnummer */
+@media(min-width:900px){
+  section{display:grid;grid-template-columns:74px 1fr;gap:0 26px;padding-left:22px}
+  section > *{grid-column:2}
+  section > .kap{grid-column:1;grid-row:1/999}
+}
+.kap{
+  font:26px/1 var(--mono);font-weight:700;color:var(--stahl);
+  padding-top:3px;letter-spacing:-.02em;
+}
+@media(max-width:899px){
+  .kap{font-size:13px;color:var(--tinte-2);margin-bottom:4px}
+  .kap::after{content:" ·"}
+}
+h2{
+  margin:0 0 6px;font-size:23px;line-height:1.2;font-weight:750;
+  letter-spacing:-.01em;
+}
+h3{
+  margin:26px 0 8px;font-size:13px;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--stahl);
+}
+p{margin:0 0 14px;max-width:72ch}
+ul,ol.schritte{max-width:72ch}
+ul{padding-left:20px;margin:0 0 14px}
+li{margin-bottom:7px}
+strong{font-weight:680}
+code{
+  font:.88em var(--mono);background:#eef1f4;border:1px solid var(--linie);
+  border-radius:2px;padding:1px 5px;
+}
+
+/* Ablaufschritte */
+ol.schritte{list-style:none;counter-reset:s;padding:0;margin:0 0 16px}
+ol.schritte li{
+  counter-increment:s;position:relative;padding-left:40px;margin-bottom:13px;
+}
+ol.schritte li::before{
+  content:counter(s);position:absolute;left:0;top:0;
+  width:26px;height:26px;border:1.5px solid var(--stahl);color:var(--stahl);
+  font:13px/23px var(--mono);font-weight:700;text-align:center;
+}
+
+/* Struktur-Zeichnung */
+pre.baum{
+  font:13.5px/1.65 var(--mono);background:#f5f7f8;
+  border:1px solid var(--linie);border-left:3px solid var(--signal);
+  padding:16px 18px;overflow-x:auto;margin:0 0 16px;
+}
+
+/* Signalwort-Kästen nach Werkstattkonvention */
+.merk{
+  border:1px solid var(--linie);border-left:5px solid var(--signal);
+  background:#fdf8ec;padding:13px 16px;margin:0 0 16px;max-width:72ch;
+}
+.merk.falsch{border-left-color:var(--alarm);background:#fbf0ef}
+.merk.gut{border-left-color:var(--gruen);background:#eff5f2}
+.merk b{
+  display:block;font:10px/1 var(--mono);letter-spacing:.2em;
+  text-transform:uppercase;margin-bottom:8px;color:var(--alarm);
+}
+.merk b{color:#8a6400}
+.merk.falsch b{color:var(--alarm)}
+.merk.gut b{color:var(--gruen)}
+.merk p:last-child{margin-bottom:0}
+
+/* Tabellen */
+.tabwrap{overflow-x:auto;margin:0 0 16px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:520px}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--linie);vertical-align:top}
+thead th{
+  font:10px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--tinte-2);border-bottom:2px solid var(--stahl);
+}
+tbody tr:nth-child(even){background:#f7f9fa}
+td.f{font-family:var(--mono);font-size:13px;font-weight:600;white-space:nowrap}
+td.t{font-family:var(--mono);font-size:12.5px;color:var(--tinte-2);white-space:nowrap}
+.pflicht{color:var(--alarm);font-weight:700}
+.opt{color:var(--tinte-2)}
+
+/* Gegenüberstellung richtig/falsch */
+.paar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 16px}
+@media(max-width:700px){.paar{grid-template-columns:1fr}}
+.paar > div{border:1px solid var(--linie);padding:13px 15px;background:#fafbfc}
+.paar h4{
+  margin:0 0 9px;font:10px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
+}
+.paar .nein h4{color:var(--alarm)}
+.paar .ja h4{color:var(--gruen)}
+.paar code{display:block;background:none;border:0;padding:2px 0;font-size:12.5px}
+
+footer{
+  max-width:1080px;margin:0 auto;padding:0 24px 50px;
+  color:var(--tinte-2);font-size:13px;
+}
+footer hr{border:0;border-top:1px solid var(--linie);margin:0 0 16px}
+
+@media print{
+  body{background:#fff;font-size:11pt}
+  .schild{background:#fff;color:#000;border-bottom:3px solid #000;padding:0 0 16px}
+  .schild .eyebrow{color:#000}
+  .typenschild div{background:#fff;border:1px solid #999}
+  .typenschild dt{color:#444}
+  nav.toc{display:none}
+  section{break-inside:avoid;border:1px solid #999;border-left-width:3px;margin:14px 0}
+  .merk,pre.baum{break-inside:avoid}
+  a{color:#000;text-decoration:none}
+}
+</style>
+</head>
+<body>
+
+<header class="schild">
+  <div class="schild-inner">
+    <div class="eyebrow">Betriebsanleitung · Bereich EP</div>
+    <h1>Wartungsprotokoll</h1>
+    <p class="sub">Erfassung von Wartungen, Tätigkeiten und Vorkommnissen an den Anlagen der Endprüfung. Bedienung, Eingaberegeln und Datenstruktur.</p>
+    <dl class="typenschild">
+      <div><dt>Programmstand</dt><dd>v16</dd></div>
+      <div><dt>Datenschema</dt><dd>Version 2</dd></div>
+      <div><dt>Bereich</dt><dd>EP</dd></div>
+      <div><dt>Datenablage</dt><dd>data.json</dd></div>
+      <div><dt>Stand</dt><dd>05.08.2026</dd></div>
+    </dl>
+  </div>
+</header>
+
+<nav class="toc">
+  <ol>
+    <li><a href="#k1">Zweck und Aufbau</a></li>
+    <li><a href="#k2">Anlagenstruktur</a></li>
+    <li><a href="#k3">Erstinbetriebnahme</a></li>
+    <li><a href="#k4">Anlagen pflegen</a></li>
+    <li><a href="#k5">Wartung erfassen</a></li>
+    <li><a href="#k6">Tätigkeit erfassen</a></li>
+    <li><a href="#k7">Vorkommnis erfassen</a></li>
+    <li><a href="#k8">Ändern und Löschen</a></li>
+    <li><a href="#k9">Speichern und Abgleich</a></li>
+    <li><a href="#k10">Eingaberegeln</a></li>
+    <li><a href="#k11">Feldreferenz</a></li>
+    <li><a href="#k12">Stolperstellen</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- 1 -->
+<section id="k1">
+  <div class="kap">01</div>
+  <h2>Zweck und Aufbau</h2>
+  <p>Das Protokoll hält fest, was an den Anlagen der Endprüfung passiert ist — als Nachweis im Nachhinein, nicht als Planungswerkzeug. Erfasst wird in drei getrennten Kategorien, weil sie unterschiedliche Fragen beantworten.</p>
+
+  <div class="tabwrap">
+  <table>
+    <thead><tr><th>Kategorie</th><th>Beantwortet</th><th>Bezug</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Wartung</strong></td><td>Was habe ich an der Maschine gemacht?</td><td class="t">Anlage</td></tr>
+      <tr><td><strong>Tätigkeit</strong></td><td>Woran habe ich gearbeitet?</td><td class="t">Modul oder Anlage</td></tr>
+      <tr><td><strong>Vorkommnis</strong></td><td>Was ist passiert, das nicht meine Arbeit war?</td><td class="t">Anlage</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Die Trennung ist keine Formsache. Eine Wartung zählt auf den Wartungszyklus der Anlage ein, eine Tätigkeit auf deine Arbeitszeit, ein Vorkommnis auf niemanden — es dokumentiert einen Zustand, den du gemeldet hast.</p>
+
+  <div class="merk">
+    <b>Grundregel</b>
+    <p>Ein Eintrag beschreibt einen Vorgang an einer Stelle. Zwei Maschinen heißen zwei Einträge, auch wenn du beides in einem Rutsch gemacht hast.</p>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="k2">
+  <div class="kap">02</div>
+  <h2>Anlagenstruktur</h2>
+  <p>Der Bereich EP wird nicht erfasst — er ist immer derselbe. Erfasst werden zwei Ebenen: die <strong>Anlage</strong> und, sofern vorhanden, die <strong>Station</strong> innerhalb der Anlage.</p>
+
+<pre class="baum">Bereich EP  (nicht erfasst, immer gleich)
+│
+├── VAG 1 ─────────── Nutzentrenner · MPS · Verguss · EOL
+├── VAG 2 ─────────── Nutzentrenner · MPS · Verguss · EOL
+│
+├── CVM 1 ─────────── Einzelplatz, keine Stationen
+├── CVM 2 ─────────── Einzelplatz, keine Stationen
+│
+└── Klimaanlage ───── wirkt auf den ganzen Bereich</pre>
+
+  <p>Der Unterschied zwischen Linie und Einzelplatz braucht kein eigenes Feld: <strong>ein Einzelplatz ist eine Anlage mit nur einer Maschine.</strong> Er hat schlicht keine Stationen hinterlegt, und deshalb erscheint das Stationsfeld bei ihm gar nicht erst.</p>
+
+  <h3>Was in welches Feld gehört</h3>
+  <div class="tabwrap">
+  <table>
+    <thead><tr><th>Feld</th><th>Frage</th><th>Beispiele</th></tr></thead>
+    <tbody>
+      <tr><td class="f">Anlage</td><td>An welcher Maschine?</td><td>VAG 2 · CVM 1 · Klimaanlage</td></tr>
+      <tr><td class="f">Station</td><td>Welcher Teil davon?</td><td>MPS · Verguss · Nutzentrenner · EOL</td></tr>
+      <tr><td class="f">Modul</td><td>Welches Kundenteil lief?</td><td>BMW 0659 · Porsche 1208 · VAG 2005</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="merk">
+    <b>Merke</b>
+    <p>Die Anlage heißt nach der <strong>Produktart</strong>, nicht nach dem Kundenmodul. Der Prüfplatz bleibt <code>CVM 1</code>, auch wenn dort heute BMW 0659 und morgen ein anderes Modul läuft. Nur so bleibt die Historie über Kundenwechsel hinweg zusammenhängend.</p>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="k3">
+  <div class="kap">03</div>
+  <h2>Erstinbetriebnahme</h2>
+  <p>Die Anwendung erwartet beim Start eine <code>data.json</code>. Wenn du ganz neu anfängst und noch keine hast, legst du sie so an:</p>
+
+  <ol class="schritte">
+    <li>Auf dem Startbildschirm <strong>siebenmal auf das Schraubenschlüssel-Symbol klicken</strong>. Damit startet die Anwendung mit einem leeren Datenbestand.</li>
+    <li>In die <strong>Maschinenverwaltung</strong> wechseln und das Adminpasswort eingeben. Ohne Anmeldung lässt sich keine Anlage anlegen.</li>
+    <li>Die Anlagen eintragen — für VAG 1 und VAG 2 die vier Stationen mitgeben, für CVM 1, CVM 2 und die Klimaanlage das Stationsfeld leer lassen.</li>
+    <li><strong>Speichern.</strong> Die Datei, die dabei entsteht, ist deine <code>data.json</code>.</li>
+  </ol>
+
+  <p>Dieser Weg wird genau einmal gebraucht. Ab dann existiert die Datei und du lädst sie beim Start.</p>
+</section>
+
+<!-- 4 -->
+<section id="k4">
+  <div class="kap">04</div>
+  <h2>Anlagen pflegen</h2>
+  <p>Anlagen werden ausschließlich in der Maschinenverwaltung angelegt, geändert und gelöscht. Die Anlagenfelder in den Erfassungsformularen erlauben nur die Auswahl aus dieser Liste — dort lässt sich nichts frei eintippen.</p>
+
+  <div class="merk">
+    <b>Warum keine Freitexteingabe</b>
+    <p>Sobald der Anlagenname unten frei eingetippt werden kann, entstehen über die Monate Dubletten wie <code>VAG 2</code> neben <code>VAG2</code>. Jede Auswertung nach Anlage zerfällt dann in zwei Hälften. Die Stammdaten sind die einzige Quelle für Anlagennamen.</p>
+  </div>
+
+  <h3>Felder beim Anlegen</h3>
+  <div class="tabwrap">
+  <table>
+    <thead><tr><th>Feld</th><th>Bedeutung</th><th>Hinweis</th></tr></thead>
+    <tbody>
+      <tr><td class="f">Name</td><td>Anlagenbezeichnung</td><td>Betriebliche Bezeichnung übernehmen, nichts erfinden</td></tr>
+      <tr><td class="f">Stationen</td><td>Maschinen innerhalb der Anlage</td><td>Kommagetrennt. Leer lassen = Einzelplatz</td></tr>
+      <tr><td class="f">Zyklus</td><td>Wartungsintervall in Tagen</td><td>0 = kein festes Intervall</td></tr>
+      <tr><td class="f">Letzte Wartung</td><td>Datum der letzten Wartung</td><td>Wird beim Speichern einer Wartung automatisch gesetzt</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Eine Anlage, auf die noch Einträge verweisen, lässt sich nicht löschen. Das ist Absicht — sonst hättest du Einträge, deren Anlage es nicht mehr gibt.</p>
+
+  <p>Beim Laden einer Datei werden Anlagen, die in Einträgen vorkommen, aber in der Liste fehlen, <strong>automatisch als Einzelplatz ergänzt</strong>. Das ist der Normalfall nach einem Abgleich vom Handy. Wenn die Anlage Stationen haben soll, trägst du sie danach nach.</p>
+</section>
+
+<!-- 5 -->
+<section id="k5">
+  <div class="kap">05</div>
+  <h2>Wartung erfassen</h2>
+  <p>Arbeit an der Maschine selbst: Fasstausch, Kopfwartung, Reparatur, Einstellarbeiten.</p>
+
+  <div class="tabwrap">
+  <table>
+    <thead><tr><th>Feld</th><th>Pflicht</th><th>Inhalt</th></tr></thead>
+    <tbody>
+      <tr><td class="f">Zeitpunkt</td><td class="pflicht">ja</td><td>Datum und Uhrzeit</td></tr>
+      <tr><td class="f">Anlage</td><td class="pflicht">ja</td><td>Auswahl aus den Stammdaten</td></tr>
+      <tr><td class="f">Station</td><td class="opt">bedingt</td><td>Erscheint nur bei Anlagen mit Stationen</td></tr>
+      <tr><td class="f">Anlass</td><td class="opt">nein</td><td>Warum die Wartung nötig war</td></tr>
+      <tr><td class="f">Arbeiten</td><td class="pflicht">ja</td><td>Ein Eintrag je Arbeitsschritt</td></tr>
+      <tr><td class="f">Material</td><td class="opt">nein</td><td>Verbaute Teile</td></tr>
+      <tr><td class="f">Kürzel</td><td class="opt">nein</td><td>Wer die Arbeit gemacht hat</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Beim Speichern wird die <strong>letzte Wartung der Anlage automatisch auf dieses Datum gesetzt.</strong> Löschst du den Eintrag später wieder, bleibt das Datum stehen — die Anwendung weist darauf hin, korrigieren musst du es selbst in der Maschinenverwaltung.</p>
+
+  <h3>Ein Vorgang, zwei Maschinen</h3>
+  <p>Fasstausch und Kopfwartung in einem Durchgang sind zwei Einträge, weil Harzfass und Härterfass an der MPS hängen, der Mischkopf aber am Verguss:</p>
+
+  <div class="paar">
+    <div class="ja">
+      <h4>So</h4>
+      <code>VAG 2 · MPS</code>
+      <code>→ Harzfass, Härterfass, Einwaage</code>
+      <code style="margin-top:9px">VAG 2 · Verguss</code>
+      <code>→ Kopfwartung</code>
+    </div>
+    <div class="nein">
+      <h4>Nicht so</h4>
+      <code>VAG 2</code>
+      <code>→ Harzfass, Härterfass,</code>
+      <code>&nbsp;&nbsp;&nbsp;Einwaage, Kopfwartung</code>
+      <code style="margin-top:9px;opacity:.65">Wartungszyklen nicht trennbar</code>
+    </div>
+  </div>
+
+  <p>Nur mit der Trennung lässt sich später beantworten, wann zuletzt eine Kopfwartung war oder wie oft Fässer getauscht werden mussten.</p>
+</section>
+
+<!-- 6 -->
+<section id="k6">
+  <div class="kap">06</div>
+  <h2>Tätigkeit erfassen</h2>
+  <p>Hier entscheidet der Schalter <strong>Schichtplanung</strong>, wonach gefragt wird. Es ist immer nur eines von beiden sichtbar, damit nie unklar ist, was im Feld steht.</p>
+
+  <div class="tabwrap">
+  <table>
+    <thead><tr><th>Schalter</th><th>Es zählt</th><th>Dauer</th><th>Beispiel</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>gesetzt</strong><br><span class="t">produktive Schicht</span></td>
+        <td>das <strong>Modul</strong></td>
+        <td class="t">keine — ganzer Tag</td>
+        <td class="t">BMW 0659 · EOL, Endtest, Verpacken</td>
+      </tr>
+      <tr>
+        <td><strong>nicht gesetzt</strong><br><span class="t">Facharbeitertätigkeit</span></td>
+        <td>die <strong>Anlage</strong></td>
+        <td class="t">in Stunden</td>
+        <td class="t">VAG 2 · MPS — 2,5 h</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Bei einer Wartung ist das Modul ohne Belang, bei einer Schicht der Prüfplatz. Deshalb wird das jeweils andere Feld gar nicht erst abgefragt.</p>
+
+  <div class="merk">
+    <b>Zur Dauer</b>
+    <p>Schichteinträge tragen bewusst keine Stundenzahl. Stünde neben der geplanten Schicht noch die Einzelzeit desselben Tages, würde dieselbe Arbeitszeit zweimal in der Summe landen.</p>
+  </div>
+
+  <p>Das Datum bleibt nach dem Speichern stehen — mehrere Tätigkeiten am selben Tag sind der Normalfall.</p>
+</section>
+
+<!-- 7 -->
+<section id="k7">
+  <div class="kap">07</div>
+  <h2>Vorkommnis erfassen</h2>
+  <p>Betriebliche Zustände, die nicht deine Arbeit sind: Klimaanlage außerhalb der Grenzwerte, abgelaufenes Material, Monteureinsatz, Stillstand.</p>
+
+  <div class="tabwrap">
+  <table>
+    <thead><tr><th>Feld</th><th>Pflicht</th><th>Inhalt</th></tr></thead>
+    <tbody>
+      <tr><td class="f">Datum</td><td class="pflicht">ja</td><td>Tag des Vorkommnisses</td></tr>
+      <tr><td class="f">Anlage</td><td class="pflicht">ja</td><td>Wo es aufgetreten ist</td></tr>
+      <tr><td class="f">Station</td><td class="opt">bedingt</td><td>Nur bei Anlagen mit Stationen</td></tr>
+      <tr><td class="f">Beschreibung</td><td class="pflicht">ja</td><td>Was vorgefallen ist — ohne Zahlen</td></tr>
+      <tr><td class="f">Messwert</td><td class="opt">nein</td><td>Die gemessene Zahl</td></tr>
+      <tr><td class="f">Einheit</td><td class="opt">nein</td><td>% · °C · kg · bar</td></tr>
+      <tr><td class="f">Grenzwert</td><td class="opt">nein</td><td>Ab wo es zu viel ist</td></tr>
+      <tr><td class="f">Status</td><td class="opt">nein</td><td>offen · gemeldet · erledigt</td></tr>
+      <tr><td class="f">Gemeldet an</td><td class="opt">nein</td><td>Name oder Stelle</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="merk">
+    <b>Messwerte gehören ins Zahlenfeld</b>
+    <p>Eine Zahl im Fließtext lässt sich nicht auswerten. Erst als Zahlenfeld wird aus drei Einzelmeldungen ein Verlauf, den du zeigen kannst — und genau der ist das Argument, nicht die einzelne Notiz.</p>
+  </div>
+
+  <div class="paar">
+    <div class="ja">
+      <h4>So</h4>
+      <code>Text: Relative Luftfeuchte</code>
+      <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;über Grenzwert bei Einwaage</code>
+      <code>Wert: 71 &nbsp; Einheit: % &nbsp; Grenze: 50</code>
+    </div>
+    <div class="nein">
+      <h4>Nicht so</h4>
+      <code>Text: Relative Luftfeuchte</code>
+      <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;höher 50% = 71% bei Einwaage</code>
+      <code style="margin-top:9px;opacity:.65">Zahlen im Text, kein Verlauf möglich</code>
+    </div>
+  </div>
+
+  <p>Der <strong>Status</strong> macht aus deiner Notiz einen Nachweis: gemeldet an wen, wann, und ob etwas passiert ist. Ohne diese Angabe steht später nur da, dass du es wusstest.</p>
+</section>
+
+<!-- 8 -->
+<section id="k8">
+  <div class="kap">08</div>
+  <h2>Ändern und Löschen</h2>
+  <p>Jede Zeile in den Tabellen hat zwei Schaltflächen:</p>
+
+  <div class="tabwrap">
+  <table>
+    <thead><tr><th>Symbol</th><th>Wirkung</th></tr></thead>
+    <tbody>
+      <tr><td class="f">✎</td><td>Lädt den Datensatz zurück ins Formular. Der Speichern-Knopf wird grün und heißt „Änderung speichern“. Daneben steht „Abbrechen“.</td></tr>
+      <tr><td class="f">✕</td><td>Löscht den Eintrag nach Rückfrage.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="merk">
+    <b>Ändern statt löschen und neu anlegen</b>
+    <p>Beim Ändern bleibt die interne Kennung des Datensatzes erhalten. Legst du stattdessen neu an, entsteht eine neue Kennung — und beim nächsten Abgleich mit dem Handy kommt der alte Eintrag als zusätzlicher Datensatz zurück. Doppelte Zeilen entstehen genau so.</p>
+  </div>
+
+  <p>Beim Bearbeiten einer Tätigkeit wird der Schichtplanungs-Haken mitgeladen und blendet das passende Feld ein. Schaltest du dabei um, wird das jeweils andere Feld geleert.</p>
+
+  <p>Die Tabellen sind immer nach Datum sortiert, das Neueste oben. Ein nachgetragener Eintrag rutscht also an seinen richtigen Platz und nicht ans Ende.</p>
+</section>
+
+<!-- 9 -->
+<section id="k9">
+  <div class="kap">09</div>
+  <h2>Speichern und Abgleich</h2>
+  <p>Die Daten liegen in einer einzigen JSON-Datei. Es gibt keinen Server und keine automatische Sicherung — gespeichert wird, wenn du speicherst.</p>
+
+  <h3>Arbeitsablauf über den Tag</h3>
+  <ol class="schritte">
+    <li>Unterwegs am Handy die kleinen Sachen erfassen und dort speichern.</li>
+    <li>Am Rechner die Hauptdatei laden.</li>
+    <li>Die Handydatei über <strong>Datei laden</strong> dazunehmen. Beide Bestände werden zusammengeführt.</li>
+    <li>Speichern. Ab jetzt ist die Hauptdatei wieder vollständig.</li>
+  </ol>
+
+  <div class="merk">
+    <b>Wie zusammengeführt wird</b>
+    <p>Verglichen wird über die Kennung jedes Datensatzes. Was schon da ist, bleibt unverändert; nur Unbekanntes kommt hinzu. Der Desktop-Bestand geht dabei nicht verloren.</p>
+  </div>
+
+  <p>Beim Laden einer Datei nach dem alten Schema wird sie automatisch übersetzt: aus dem gemischten Ortsfeld werden Anlage und Station, aus dem Arbeitstext eine Liste, und Zahlen im Vorkommnistext wandern in die Messwertfelder. <strong>Nach einer Übersetzung die Einträge einmal durchsehen</strong> — was die alte Datei nicht hergab, kann die Übersetzung nicht erfinden.</p>
+</section>
+
+<!-- 10 -->
+<section id="k10">
+  <div class="kap">10</div>
+  <h2>Eingaberegeln</h2>
+
+  <h3>Benennung</h3>
+  <ul>
+    <li><strong>Betriebliche Namen übernehmen.</strong> VAG 1, VAG 2, CVM 1, CVM 2 — keine eigenen Kürzel erfinden.</li>
+    <li><strong>Anlage nach Produktart, nicht nach Kunde.</strong> <code>CVM 1</code>, nicht <code>BMW 0659</code>.</li>
+    <li><strong>Modulnummer immer vollständig.</strong> <code>Porsche 1208</code>, nicht <code>Porsche</code>. Den Kunden kannst du jederzeit aus dem Präfix ziehen, die Nummer nicht ergänzen.</li>
+    <li><strong>Gleiche Schreibweise beibehalten.</strong> Vorschlagslisten helfen dabei — vorhandene Einträge auswählen statt neu tippen.</li>
+  </ul>
+
+  <h3>Tätigkeiten und Arbeiten</h3>
+  <ul>
+    <li><strong>Ein Begriff je Eintrag.</strong> <code>Harzfass</code> und <code>Härterfass</code> sind zwei Einträge, nicht einer.</li>
+    <li><strong>Begriffe nicht zerreißen.</strong> <code>Harzfass getauscht</code> gehört zusammen — getrennt bleiben <code>Harz</code>, <code>Fass</code> und <code>getauscht</code> als sinnlose Bruchstücke stehen.</li>
+    <li><strong>Tätigkeit, nicht Beschreibung.</strong> <code>Kopfwartung</code> statt <code>habe den Kopf gewartet</code>.</li>
+  </ul>
+
+  <h3>Leere Felder</h3>
+  <p>Ein leeres Feld ist eine Aussage, keine Lücke. Kein Stationsfeld heißt „die Anlage besteht nur aus sich selbst“, keine Anlage beim Vorkommnis der Klimaanlage hieße „betrifft nicht eine einzelne Linie“. Nichts hineinschreiben, nur um es zu füllen.</p>
+
+  <h3>Sofort erfassen</h3>
+  <p>Ein Vorkommnis, das drei Tage später aus dem Gedächtnis eingetragen wird, hat keinen Messwert mehr. Der Wert entsteht beim Ablesen, nicht beim Erinnern.</p>
+</section>
+
+<!-- 11 -->
+<section id="k11">
+  <div class="kap">11</div>
+  <h2>Feldreferenz</h2>
+  <p>Aufbau der <code>data.json</code>, Schema Version 2. Diese Übersicht brauchst du für ein späteres Auswertungstool.</p>
+
+  <h3>machines — Anlagenstammdaten</h3>
+  <div class="tabwrap">
+  <table>
+    <thead><tr><th>Feld</th><th>Typ</th><th>Bedeutung</th></tr></thead>
+    <tbody>
+      <tr><td class="f">id</td><td class="t">Text</td><td>Eindeutige Kennung</td></tr>
+      <tr><td class="f">name</td><td class="t">Text</td><td>Anlagenname, Bezugswert für alle Einträge</td></tr>
+      <tr><td class="f">stations</td><td class="t">Liste</td><td>Stationen. Leer = Einzelplatz</td></tr>
+      <tr><td class="f">cycleDays</td><td class="t">Zahl</td><td>Wartungsintervall in Tagen, 0 = keins</td></tr>
+      <tr><td class="f">lastService</td><td class="t">Datum</td><td>Letzte Wartung, wird automatisch gesetzt</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>entries — Wartungen</h3>
+  <div class="tabwrap">
+  <table>
+    <thead><tr><th>Feld</th><th>Typ</th><th>Bedeutung</th></tr></thead>
+    <tbody>
+      <tr><td class="f">id</td><td class="t">Text</td><td>Kennung, bleibt beim Ändern erhalten</td></tr>
+      <tr><td class="f">datetime</td><td class="t">Zeitpunkt</td><td>Datum und Uhrzeit</td></tr>
+      <tr><td class="f">machine</td><td class="t">Text</td><td>Anlage</td></tr>
+      <tr><td class="f">station</td><td class="t">Text</td><td>Station oder leer</td></tr>
+      <tr><td class="f">issue</td><td class="t">Text</td><td>Anlass</td></tr>
+      <tr><td class="f">action</td><td class="t">Liste</td><td>Ausgeführte Arbeiten</td></tr>
+      <tr><td class="f">parts</td><td class="t">Liste</td><td>Verbautes Material</td></tr>
+      <tr><td class="f">technician</td><td class="t">Text</td><td>Kürzel</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>activities — Tätigkeiten</h3>
+  <div class="tabwrap">
+  <table>
+    <thead><tr><th>Feld</th><th>Typ</th><th>Bedeutung</th></tr></thead>
+    <tbody>
+      <tr><td class="f">id</td><td class="t">Text</td><td>Kennung</td></tr>
+      <tr><td class="f">date</td><td class="t">Datum</td><td>Tag der Tätigkeit</td></tr>
+      <tr><td class="f">shift</td><td class="t">ja/nein</td><td>Produktive Schicht</td></tr>
+      <tr><td class="f">module</td><td class="t">Text</td><td>Modul — nur wenn shift gesetzt</td></tr>
+      <tr><td class="f">machine</td><td class="t">Text</td><td>Anlage — nur wenn shift nicht gesetzt</td></tr>
+      <tr><td class="f">station</td><td class="t">Text</td><td>Station oder leer</td></tr>
+      <tr><td class="f">task</td><td class="t">Liste</td><td>Tätigkeiten</td></tr>
+      <tr><td class="f">duration</td><td class="t">Zahl</td><td>Stunden. Bei shift immer leer</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>incidents — Vorkommnisse</h3>
+  <div class="tabwrap">
+  <table>
+    <thead><tr><th>Feld</th><th>Typ</th><th>Bedeutung</th></tr></thead>
+    <tbody>
+      <tr><td class="f">id</td><td class="t">Text</td><td>Kennung</td></tr>
+      <tr><td class="f">date</td><td class="t">Datum</td><td>Tag des Vorkommnisses</td></tr>
+      <tr><td class="f">machine</td><td class="t">Text</td><td>Anlage</td></tr>
+      <tr><td class="f">station</td><td class="t">Text</td><td>Station oder leer</td></tr>
+      <tr><td class="f">text</td><td class="t">Text</td><td>Beschreibung ohne Zahlen</td></tr>
+      <tr><td class="f">value</td><td class="t">Zahl</td><td>Messwert</td></tr>
+      <tr><td class="f">unit</td><td class="t">Text</td><td>Einheit</td></tr>
+      <tr><td class="f">limit</td><td class="t">Zahl</td><td>Grenzwert</td></tr>
+      <tr><td class="f">status</td><td class="t">Text</td><td>offen · gemeldet · erledigt</td></tr>
+      <tr><td class="f">reportedTo</td><td class="t">Text</td><td>Gemeldet an</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 12 -->
+<section id="k12">
+  <div class="kap">12</div>
+  <h2>Stolperstellen</h2>
+
+  <h3>Verguss heißt zweierlei</h3>
+  <p>Der Bereich, in dem die Anlagen stehen, und die Station innerhalb der VAG-Linien tragen denselben Namen. In der Anwendung meint <code>Verguss</code> <strong>immer die Station</strong> — der Bereich wird nicht erfasst. Wenn in einer alten Datei <code>Verguss</code> als Ort steht, ist damit meistens der Bereich gemeint und die eigentliche Station fehlt.</p>
+
+  <h3>VAG 2 und VAG 2005 sehen sich ähnlich</h3>
+  <p>Das eine ist eine Anlage, das andere ein Kundenmodul. In getrennten Feldern ist das unkritisch. Ein Auswertungstool muss aber auf exakte Übereinstimmung prüfen — eine Suche nach Teiltexten würde bei <code>VAG 2</code> auch alle VAG-2005-Einträge einsammeln.</p>
+
+  <h3>Material an der falschen Maschine</h3>
+  <p>Harzfass, Härterfass und Einwaage gehören zur <strong>MPS</strong>, nicht zum Verguss. Der Mischkopf gehört zum <strong>Verguss</strong>. Das verwechselt sich leicht, weil beides zur selben Linie gehört und in einem Arbeitsgang erledigt wird.</p>
+
+  <h3>Nicht gespeichert ist nicht erfasst</h3>
+  <p>Es gibt keine Zwischensicherung. Schließt du die Anwendung ohne zu speichern, ist der Stand seit dem letzten Speichern weg.</p>
+
+  <h3>Der Zusammenhang steckt nicht in einem Feld</h3>
+  <p>Steigende Luftfeuchte, danach feuchtes Harz, danach ausdosierte Kilogramm — das ist eine Kette über drei Einträge hinweg. Die Anwendung stellt sie nicht selbst her. Sie wird sichtbar, weil Datum, Anlage und Messwert sauber erfasst sind. Deshalb lohnt sich die Genauigkeit an genau diesen drei Stellen am meisten.</p>
+</section>
+
+</main>
+
+<footer>
+  <hr>
+  <p>Wartungsprotokoll EP · Programmstand v16 · Datenschema Version 2 · Stand 05.08.2026<br>
+  Bei Änderungen an der Anlagenstruktur diese Anleitung mit anpassen — insbesondere Kapitel 02 und 11.</p>
+</footer>
+
+</body>
+</html>
