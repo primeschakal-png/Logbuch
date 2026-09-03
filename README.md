@@ -4,6 +4,8 @@ Eine einzelne HTML-Datei, die drei Dinge in einem Werkzeug erledigt: Wartungen d
 
 **Aktueller Stand:** v16 (`schemaVersion: 16`)
 
+> Anlagen-, Stations- und Modulbezeichnungen in dieser Dokumentation und in der Beispieldatei sind frei erfunden. Die echten Bezeichnungen stehen ausschließlich in der lokalen `data.json`, die nicht Teil dieses Repositories ist.
+
 ---
 
 ## Inhalt
@@ -62,7 +64,7 @@ Wartungsprotokoll/
 └── Backups/              Zielordner für die Tagesbackups
 ```
 
-`manual.html` ist nicht Teil dieses Repositories, weil sie den persönlichen Arbeitsstand beschreibt. Fehlt sie, öffnet der Anleitung-Button ins Leere, die App funktioniert davon unabhängig.
+`manual.html` liegt im Repository und wird vom Anleitung-Button geöffnet. Fehlt die Datei im Arbeitsordner, läuft der Button ins Leere, die App funktioniert davon unabhängig.
 
 ---
 
@@ -72,7 +74,7 @@ Wartungsprotokoll/
 
 Der Stamm, auf den sich alles andere bezieht. Eine Maschine hat einen Namen, ein Wartungsintervall in Tagen, das Datum der letzten Wartung, eine Maßnahme oder ToDo-Beschreibung und optional eine Liste von Stationen.
 
-Der Unterschied ist wichtig: Eine Anlage **mit** Stationen ist eine Linie, etwa VAG 2 mit Nutzentrenner, MPS, Verguss und EOL. Eine Anlage **ohne** Stationen ist ein Einzelplatz. Aus dieser Liste speisen sich alle Auswahlfelder. Anlagen werden ausschließlich hier angelegt, in den Erfassungsformularen kann nur ausgewählt und nichts frei eingetippt werden. Das hält die Schreibweisen sauber.
+Der Unterschied ist wichtig: Eine Anlage **mit** Stationen ist eine Linie, etwa Linie 2 mit Nutzentrenner, MPS, Verguss und EOL. Eine Anlage **ohne** Stationen ist ein Einzelplatz. Aus dieser Liste speisen sich alle Auswahlfelder. Anlagen werden ausschließlich hier angelegt, in den Erfassungsformularen kann nur ausgewählt und nichts frei eingetippt werden. Das hält die Schreibweisen sauber.
 
 ### Wartungen (`entries`)
 
@@ -246,11 +248,12 @@ Ein vollständiges Beispiel mit befüllten Datensätzen liegt als [`data.example
 
 Beim Laden wird jede Datei normalisiert, bevor sie in die App geht. Das betrifft vor allem den Sprung von v15 auf v16:
 
-* Anlage und Station standen früher gemischt in einem Feld, mal als `"Verguss VAG 2"`, mal als `"Verguss,VAG 2"`, mal als Liste. Beides wird jetzt getrennt, wobei Anlagennamen Vorrang vor Stationsnamen haben.
+* Anlage und Station standen früher gemischt in einem Feld, mal als `"Verguss Linie 2"`, mal als `"Verguss,Linie 2"`, mal als Liste. Beides wird jetzt getrennt, wobei Anlagennamen Vorrang vor Stationsnamen haben.
 * `action` war ein einzelner Text und ist jetzt eine Liste.
 * Messwerte, die früher im Freitext eines Vorkommnisses standen, werden nach Möglichkeit in Wert, Einheit und Grenzwert überführt.
 * Fehlende Abschnitte wie `activities` aus v10 oder `incidents` aus v12 werden als leere Listen ergänzt.
 * Datensätze ohne ID bekommen eine.
+* Anlagen, die in Einträgen vorkommen, aber im Stamm fehlen, werden als Einzelplatz ohne Stationen ergänzt. Stationen trägt man danach im Maschinen-Editor nach.
 
 Die Migration verändert die Datei auf der Platte nicht. Sie greift beim Laden und wird erst mit dem nächsten Speichern festgeschrieben. Wer auf Nummer sicher gehen will, legt vorher eine Kopie an.
 
@@ -297,7 +300,7 @@ Geplant beziehungsweise angedacht:
 
 ## Lizenz
 
-© 2024–2026 TSC. Alle Rechte vorbehalten. Details in [LICENSE](LICENSE).
+© 2024–2026 Prime Schakal. Alle Rechte vorbehalten. Details in [LICENSE](LICENSE).
 
 Der Quelltext ist einsehbar, aber nicht zur Weiterverwendung freigegeben. Wer das Werkzeug einsetzen oder anpassen möchte, fragt vorher an.
 
