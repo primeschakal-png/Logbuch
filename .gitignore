@@ -13,9 +13,6 @@ Backup/
 # Ausnahme: die Beispieldatei wird bewusst versioniert
 !data.example.json
 
-# Persoenliche Bedienungsanleitung
-manual.html
-
 # ============================================================
 #  Exporte
 # ============================================================
