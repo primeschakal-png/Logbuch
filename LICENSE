@@ -1,0 +1,50 @@
+Copyright © 2024–2026 Torsten Schuchardt
+Alle Rechte vorbehalten. / All rights reserved.
+
+DEUTSCH
+
+Dieses Werk einschließlich aller seiner Teile ist urheberrechtlich geschützt.
+Der Quelltext wird ausschließlich zur Einsicht veröffentlicht.
+
+Ohne vorherige schriftliche Zustimmung des Rechteinhabers ist insbesondere
+untersagt:
+
+  - die Vervielfältigung, Verbreitung oder öffentliche Zugänglichmachung
+    des Werkes oder von Teilen davon,
+  - die Bearbeitung, Übersetzung oder Umgestaltung,
+  - die Nutzung zu gewerblichen Zwecken,
+  - die Weitergabe an Dritte in veränderter oder unveränderter Form.
+
+Erlaubt ist das Anfertigen einer Kopie zum rein privaten Gebrauch sowie das
+Lesen des Quelltextes zu Lern- und Prüfzwecken.
+
+Das Werk wird ohne jede Gewähr bereitgestellt. Der Rechteinhaber haftet nicht
+für Schäden, die aus der Nutzung oder der Unmöglichkeit der Nutzung entstehen,
+insbesondere nicht für Datenverlust.
+
+Anfragen zur Nutzung richten Sie bitte an den Rechteinhaber.
+
+ENGLISH
+
+This work, including all of its parts, is protected by copyright. The source
+code is published for inspection only.
+
+Without the prior written consent of the copyright holder, the following are
+prohibited: reproduction, distribution or public communication of the work or
+parts thereof; modification, translation or adaptation; commercial use; and
+transfer to third parties in modified or unmodified form.
+
+Making a copy for strictly private use and reading the source code for study
+and review purposes are permitted.
+
+The work is provided without any warranty. The copyright holder is not liable
+for any damages arising from its use or from the inability to use it, in
+particular not for loss of data.
+
+THIRD-PARTY COMPONENTS
+
+The application file embeds third-party libraries which remain under their own
+licenses and are not covered by the terms above:
+
+  - Tom Select      Apache License 2.0    https://tom-select.js.org/
+  - FullCalendar    MIT License           https://fullcalendar.io/

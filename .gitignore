@@ -1,0 +1,62 @@
+# ============================================================
+#  Echte Betriebsdaten gehoeren NICHT ins Repository.
+#  Sie enthalten Anlagen-, Modul- und Personennamen.
+# ============================================================
+data.json
+data-*.json
+wartungsdaten*.json
+*_backup_*.json
+Backups/
+backups/
+Backup/
+
+# Ausnahme: die Beispieldatei wird bewusst versioniert
+!data.example.json
+
+# Persoenliche Bedienungsanleitung
+manual.html
+
+# ============================================================
+#  Exporte
+# ============================================================
+*.ics
+*.csv
+*.pdf
+
+# ============================================================
+#  Betriebssystem
+# ============================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ============================================================
+#  Editoren und Werkzeuge
+# ============================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+*.orig
+*.tmp
+~$*
+
+# ============================================================
+#  Falls doch mal ein Build- oder Testschritt dazukommt
+# ============================================================
+node_modules/
+package-lock.json
+dist/
+build/
+test-results/
+playwright-report/
+.playwright/

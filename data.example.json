@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 16,
+  "exportedAt": "2026-09-01T05:30:00.000Z",
+  "entries": [
+    {
+      "id": "b1f4c9d2-1a3e-4c77-9f01-8a2d5e6c4b10",
+      "datetime": "2026-08-18T06:15",
+      "machine": "Linie 2",
+      "station": "MPS",
+      "issue": "Greifer schliesst nicht vollstaendig",
+      "action": [
+        "Pneumatikschlauch getauscht",
+        "Endlage neu justiert"
+      ],
+      "parts": [
+        "Schlauch 6 mm",
+        "Steckverschraubung"
+      ],
+      "technician": "T. Schuchardt"
+    },
+    {
+      "id": "0c8a77e5-52b1-4d0a-b6c9-3f7e1d9a2c44",
+      "datetime": "2026-08-25T13:40",
+      "machine": "Pruefplatz A",
+      "station": null,
+      "issue": "Turnusmaessige Wartung",
+      "action": [
+        "Filtermatte gereinigt",
+        "Kontaktstifte geprueft"
+      ],
+      "parts": [],
+      "technician": "T. Schuchardt"
+    }
+  ],
+  "machines": [
+    {
+      "id": "6d21b0a4-7c58-4f3b-8e12-90ab5c7d3e61",
+      "name": "Linie 1",
+      "cycleDays": 90,
+      "lastService": "2026-07-14",
+      "task": "Filter tauschen, Achsen abschmieren",
+      "stations": [
+        "Nutzentrenner",
+        "MPS",
+        "Verguss",
+        "EOL"
+      ]
+    },
+    {
+      "id": "a3e9f1c6-08d4-4b52-a7c3-1e5b8d2f9047",
+      "name": "Linie 2",
+      "cycleDays": 90,
+      "lastService": "2026-08-18",
+      "task": "Filter tauschen, Achsen abschmieren",
+      "stations": [
+        "Nutzentrenner",
+        "MPS",
+        "Verguss",
+        "EOL"
+      ]
+    },
+    {
+      "id": "f7b2c40d-9a13-4e86-b501-6c4d8e2a7f39",
+      "name": "Pruefplatz A",
+      "cycleDays": 180,
+      "lastService": "2026-08-25",
+      "task": "Kontaktstifte pruefen, Filtermatte reinigen",
+      "stations": []
+    },
+    {
+      "id": "2e7d5b81-3f60-4a29-9d47-b8c1f0e6a352",
+      "name": "Klimaanlagen",
+      "cycleDays": 30,
+      "lastService": "2026-08-05",
+      "task": "Sichtpruefung, Filter kontrollieren",
+      "stations": []
+    }
+  ],
+  "activities": [
+    {
+      "id": "9a4c2e70-6b18-4d35-8f92-c07e3b1a5d68",
+      "date": "2026-08-26",
+      "module": "",
+      "machine": "Linie 1",
+      "station": "EOL",
+      "task": [
+        "Pruefadapter gewechselt",
+        "Messmittel kontrolliert"
+      ],
+      "duration": 1.5,
+      "shift": false
+    },
+    {
+      "id": "51c8f3a9-4e27-40b6-9a13-7d20c5e8b4f1",
+      "date": "2026-08-27",
+      "module": "Muster 0815",
+      "machine": null,
+      "station": null,
+      "task": [
+        "Test",
+        "Verpacken"
+      ],
+      "duration": null,
+      "shift": true
+    },
+    {
+      "id": "c6017b4e-2d59-43fa-81c7-9e5b0a3d6f22",
+      "date": "2026-08-28",
+      "module": "",
+      "machine": "Linie 2",
+      "station": "Verguss",
+      "task": [
+        "Parameter geprueft",
+        "Dosiernadel gereinigt"
+      ],
+      "duration": 0.75,
+      "shift": false
+    }
+  ],
+  "incidents": [
+    {
+      "id": "7f3b9d16-8c04-4e71-a25d-3b6c1f8e0a95",
+      "date": "2026-08-20",
+      "machine": "Klimaanlagen",
+      "station": null,
+      "text": "Relative Luftfeuchte ueber Grenzwert, Anlauf verzoegert",
+      "value": 71,
+      "unit": "%",
+      "limit": 50,
+      "status": "gemeldet",
+      "reportedTo": "Instandhaltung"
+    },
+    {
+      "id": "38e0a7c2-5f41-4b93-86d7-2c9b4e1f0d57",
+      "date": "2026-08-24",
+      "machine": "Linie 1",
+      "station": "Nutzentrenner",
+      "text": "Fremdfirma vor Ort, Spindel getauscht",
+      "value": null,
+      "unit": null,
+      "limit": null,
+      "status": "erledigt",
+      "reportedTo": null
+    }
+  ]
+}
