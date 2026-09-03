@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- © 2024–2026 Torsten Schuchardt – Wartungsprotokoll / Logbuch & Tätigkeitsnachweis. Alle Rechte vorbehalten. -->
+<!-- © 2024–2026 Prime Schakal – Wartungsprotokoll / Logbuch & Tätigkeitsnachweis. Alle Rechte vorbehalten. -->
 <html lang="de" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="author" content="Torsten Schuchardt"/>
+  <meta name="author" content="Prime Schakal"/>
   <title>🔧 Wartungsprotokoll – Logbuch &amp; Tätigkeitsnachweis</title>
 
   <!-- Tom Select (einmal!) -->
@@ -5754,7 +5754,7 @@ FullCalendar.DayGrid=function(e,t,n,s){"use strict";class i extends n.DateCompon
     </div>
 
     <footer class="app-footer">
-      © 2024–2026 Torsten Schuchardt · Wartungsprotokoll v16 · Logbuch &amp; Tätigkeitsnachweis · Alle Rechte vorbehalten
+      © 2024–2026 Prime Schakal · Wartungsprotokoll v16 · Logbuch &amp; Tätigkeitsnachweis · Alle Rechte vorbehalten
       &nbsp;·&nbsp; <a href="manual.html" target="_blank">Bedienungsanleitung</a>
     </footer>
   </div>
@@ -6119,8 +6119,8 @@ FullCalendar.DayGrid=function(e,t,n,s){"use strict";class i extends n.DateCompon
   // Parsen + Normalisieren in ein sauberes Objekt (ohne Seiteneffekt auf `data`).
   // Wird sowohl beim Laden als auch beim Zusammenführen verwendet.
   // ——— Migration v15 -> v16 ——————————————————————————————————
-  // Alte Dateien haben Anlage und Station in einem Feld: mal "Verguss VAG 2",
-  // mal "Verguss,VAG 2", mal ["Verguss","VAG 2","MPS"]. Hier wird das getrennt.
+  // Alte Dateien haben Anlage und Station in einem Feld: mal "Verguss Linie 2",
+  // mal "Verguss,Linie 2", mal ["Verguss","Linie 2","MPS"]. Hier wird das getrennt.
   const KNOWN_STATIONS = ['Nutzentrenner','MPS','Verguss','EOL','Endtest'];
 
   function splitPlace(input, machineList){
@@ -6138,7 +6138,7 @@ FullCalendar.DayGrid=function(e,t,n,s){"use strict";class i extends n.DateCompon
       rest.push(p);
     });
 
-    // "Verguss VAG 2" steckt als ein String zusammen
+    // "Verguss Linie 2" steckt als ein String zusammen
     if(!machine){
       for(const p of rest){
         const hit=machineNames.find(n=>p.toLowerCase().includes(n.toLowerCase()));
@@ -6162,7 +6162,7 @@ FullCalendar.DayGrid=function(e,t,n,s){"use strict";class i extends n.DateCompon
     }
     if(station && machine && normKey(station)===normKey(machine)) station=null;
 
-    // Einzelplaetze (Klimaanlage, CVM …) haben keine Stationen - ein
+    // Einzelplaetze (Klimaanlage, Pruefplaetze …) haben keine Stationen - ein
     // mitgelesener Bereichsname wie "Verguss" darf dort nicht landen.
     if(machine && station){
       const obj=(machineList||[]).find(m=>typeof m!=='string' && normKey(m.name)===normKey(machine));
@@ -6205,7 +6205,7 @@ FullCalendar.DayGrid=function(e,t,n,s){"use strict";class i extends n.DateCompon
       };
     });
 
-    // Altbestand: Anlagennamen wie "Verguss VAG 2" enthalten die Station.
+    // Altbestand: Anlagennamen wie "Verguss Linie 2" enthalten die Station.
     // Auf den Linienteil kuerzen und die Stationen hinterlegen.
     out.machines.forEach(m=>{
       if(m.stations.length) return;
@@ -6216,7 +6216,7 @@ FullCalendar.DayGrid=function(e,t,n,s){"use strict";class i extends n.DateCompon
         m.stations=['Nutzentrenner','MPS','Verguss','EOL'];
       }
     });
-    // Doppelte zusammenfuehren, falls "Verguss VAG 2" und "VAG 2" beide auftauchen
+    // Doppelte zusammenfuehren, falls "Verguss Linie 2" und "Linie 2" beide auftauchen
     out.machines = out.machines.filter((m,i,arr)=>
       arr.findIndex(x=>normKey(x.name)===normKey(m.name))===i);
 
@@ -6226,7 +6226,7 @@ FullCalendar.DayGrid=function(e,t,n,s){"use strict";class i extends n.DateCompon
       (parsed.entries||[]).forEach(e=>{
         const n=(e.machine||'').toString().trim();
         if(!n) return;
-        // "Verguss VAG 2" -> Linienname "VAG 2"
+        // "Verguss Linie 2" -> Linienname "Linie 2"
         const m=n.match(/\b([A-ZÄÖÜ]{2,}\s*\d+)\b/);
         gefunden.add(m ? m[1].replace(/\s+/g,' ').trim() : n);
       });
@@ -6241,7 +6241,7 @@ FullCalendar.DayGrid=function(e,t,n,s){"use strict";class i extends n.DateCompon
       });
       out.machines = Array.from(gefunden).map(n=>({
         id:newId(), name:n, cycleDays:0, lastService:null, task:'',
-        stations: /^(VAG|CVM)\s*\d+$/i.test(n) ? ['Nutzentrenner','MPS','Verguss','EOL'] : []
+        stations: []   // neue Anlagen kommen als Einzelplatz, Stationen traegt man nach
       }));
     }
 
@@ -6279,14 +6279,16 @@ FullCalendar.DayGrid=function(e,t,n,s){"use strict";class i extends n.DateCompon
       if(a.shift) a.duration=null;
       if(isNaN(a.duration)) a.duration=null;
       // Altbestand: im Modulfeld stand mal ein Modul, mal eine Anlage.
-      // Ein Modulname beginnt mit Kunde plus Nummer (BMW 0659, Porsche 1208).
+      // Zuerst gegen die bekannten Anlagen pruefen. Bleibt dabei nichts haengen
+      // und sieht der Text nach "Bezeichnung + Nummer" aus, ist es ein Modul.
       if(a.machine===undefined){
-        const istModul=/^(BMW|Porsche|AUDI|VW|VAG|Mercedes|Ford|Opel)\s*\d/i.test(a.module||'');
-        if(istModul || a.shift){ a.machine=null; a.station=null; a.shift=true; }
-        else{
-          const sp=splitPlace(a.module, NAMES);
-          a.machine=sp.machine||null; a.station=sp.station; a.shift=false;
-          if(a.machine) a.module='';
+        const sp=splitPlace(a.module, NAMES);
+        if(sp.machine){
+          a.machine=sp.machine; a.station=sp.station; a.shift=false; a.module='';
+        }else{
+          const istModul=/^\D+\s*\d/.test((a.module||'').trim());
+          if(istModul || a.shift){ a.machine=null; a.station=null; a.shift=true; }
+          else{ a.machine=null; a.station=sp.station; a.shift=false; }
         }
       }
       return a;
@@ -6404,8 +6406,8 @@ FullCalendar.DayGrid=function(e,t,n,s){"use strict";class i extends n.DateCompon
 
   // ——— Tom Select ———
   // ——— Anlagen und Stationen (v16) ———————————————————————————
-  // Eine Anlage mit Stationen ist eine Linie (VAG 2 -> MPS, Verguss …),
-  // eine ohne ist ein Einzelplatz (CVM 1, Klimaanlage).
+  // Eine Anlage mit Stationen ist eine Linie (Linie 2 -> MPS, Verguss …),
+  // eine ohne ist ein Einzelplatz (Pruefplatz A, Klimaanlage).
   function machineStations(name){
     const m=(data.machines||[]).find(x=>normKey(x.name)===normKey(name));
     return (m && Array.isArray(m.stations)) ? m.stations.filter(Boolean) : [];
@@ -6680,7 +6682,7 @@ FullCalendar.DayGrid=function(e,t,n,s){"use strict";class i extends n.DateCompon
     if(!tsMachine){
       // create:false - Anlagen werden ausschliesslich oben unter
       // "Maschinen verwalten" gepflegt. Verhindert Dubletten wie
-      // "VAG 2" neben "VAG2" und haelt die Stammdaten kanonisch.
+      // "Linie 2" neben "Linie2" und haelt die Stammdaten kanonisch.
       tsMachine = new TomSelect('#machine',{
         valueField:'value', labelField:'text', searchField:'text',
         options:optionsFromMachines(), create:false,
