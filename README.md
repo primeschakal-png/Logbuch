@@ -297,7 +297,7 @@ Geplant beziehungsweise angedacht:
 
 ## Lizenz
 
-© 2024–2026 Torsten Schuchardt. Alle Rechte vorbehalten. Details in [LICENSE](LICENSE).
+© 2024–2026 TSC. Alle Rechte vorbehalten. Details in [LICENSE](LICENSE).
 
 Der Quelltext ist einsehbar, aber nicht zur Weiterverwendung freigegeben. Wer das Werkzeug einsetzen oder anpassen möchte, fragt vorher an.
 
